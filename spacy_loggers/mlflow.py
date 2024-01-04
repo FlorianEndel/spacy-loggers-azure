@@ -209,7 +209,7 @@ def _log_step_mlflow(
                 if isinstance(v, float) or isinstance(v, int)
             }
         )
-    if output_path and score == max(info["checkpoints"])[0]:
+    if output_path and score == max(info["checkpoints"])[0] and False:
         nlp = load(output_path)
         mlflow.spacy.log_model(nlp, "best")
 
@@ -217,8 +217,10 @@ def _log_step_mlflow(
 def _finalize_mlflow(
     mlflow: ModuleType,
 ):
+    # !! beware: path is hard coded !!
+    nlp = load(f"training/model-best")
+    mlflow.spacy.log_model(nlp, "best")
     mlflow.end_run()
-
 
 def _log_custom_stats(
     mlflow: ModuleType, info: Optional[Dict[str, Any]], matcher: Callable[[str], bool]
